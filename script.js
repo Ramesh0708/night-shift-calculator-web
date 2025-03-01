@@ -23,13 +23,11 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
         resultDiv.style.opacity = '1';
     }, 10);
 
-    // Moon glow effect
     moon.style.animation = 'glow 1s ease-in-out 2';
     setTimeout(() => {
         moon.style.animation = 'float 4s infinite ease-in-out';
     }, 2000);
 
-    // Confetti burst
     confetti({
         particleCount: 100,
         spread: 70,
@@ -37,20 +35,17 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
         colors: document.body.classList.contains('night-mode') ? ['#ff6f61', '#fff', '#1e3c72'] : ['#4682b4', '#ffd700', '#87ceeb']
     });
 
-    // Play ATM sound
     chaChing.currentTime = 0;
     chaChing.play().catch(error => {
         console.log('Audio play failed:', error);
     });
 
-    // Show GIF and hide after 3 seconds
     resultGif.style.display = 'block';
     setTimeout(() => {
         resultGif.style.display = 'none';
     }, 3000);
 });
 
-// Theme toggle
 const themeToggle = document.getElementById('themeToggle');
 themeToggle.addEventListener('click', function() {
     const body = document.body;
