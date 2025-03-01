@@ -3,7 +3,7 @@
 A simple web app to calculate night shift allowance based on the formula: `(CTC / 240) * 25% * days`.
 
 ## Live Demo
-[Visit the live site]
+[[Visit the live site](https://night-shift-calculator-ideas.netlify.app/)]
 
 ## Features
 - Input Annual CTC and Night Shift Days.
