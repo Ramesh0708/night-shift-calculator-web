@@ -3,32 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
+=======
     <meta name="google-adsense-account" content="ca-pub-9167202181294085">
+>>>>>>> f9c74d50ba69a748700b725a07b54487d07d31e1
     <title>Night Shift Allowance Calculator</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
-<body>
+<body class="night-mode">
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Night Shift Allowance Calculator</h1>
+        <div class="d-flex justify-content-end mb-3">
+            <button id="themeToggle" class="btn btn-outline-light btn-sm">Switch to Day Mode</button>
+        </div>
+        <h1 class="text-center mb-4 title-glow">Night Shift Allowance Calculator</h1>
+        <div class="moon" id="moon"></div>
         <div class="card p-4 mx-auto" style="max-width: 500px;">
             <form id="calculatorForm">
                 <div class="mb-3">
                     <label for="ctc" class="form-label">Annual CTC (₹)</label>
-                    <input type="number" class="form-control" id="ctc" placeholder="Enter your annual CTC" required>
+                    <input type="number" class="form-control input-glow" id="ctc" placeholder="Enter your annual CTC" required>
                 </div>
                 <div class="mb-3">
                     <label for="days" class="form-label">Night Shift Days</label>
-                    <input type="number" class="form-control" id="days" placeholder="Enter number of days" required>
+                    <input type="number" class="form-control input-glow" id="days" placeholder="Enter number of days" required>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Calculate</button>
+                <button type="submit" class="btn btn-primary w-100 calc-btn">Calculate</button>
             </form>
-            <div id="result" class="mt-3 text-center" style="display: none;">
-                <h3>Allowance: ₹ <span id="allowanceAmount">0.00</span></h3>
+            <div id="result" class="mt-3 text-center">
+                <h3 class="result-text">Allowance: ₹ <span id="allowanceAmount">0.00</span></h3>
             </div>
         </div>
         <div class="ad-container mt-5 text-center">
-            <!-- Google AdSense Placeholder (replace with your code) -->
+            <!-- Google AdSense Placeholder -->
             <ins class="adsbygoogle"
                  style="display:inline-block;width:728px;height:90px"
                  data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
@@ -39,6 +48,7 @@
             </script>
         </div>
     </div>
+    <audio id="chaChing" src="https://www.soundjay.com/buttons/cash-register-01.mp3" preload="auto"></audio>
     <script src="script.js"></script>
 </body>
 </html>
