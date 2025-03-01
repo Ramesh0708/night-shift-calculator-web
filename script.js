@@ -5,11 +5,53 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
     const days = parseInt(document.getElementById('days').value);
 
     if (isNaN(ctc) || isNaN(days) || ctc < 0 || days < 0) {
-        alert('Please enter valid positive numbers.');
+        alert('Please enter valid positive numbers!');
         return;
     }
 
     const allowance = (ctc / 240) * 0.25 * days;
-    document.getElementById('allowanceAmount').textContent = allowance.toFixed(2);
-    document.getElementById('result').style.display = 'block';
+    const resultDiv = document.getElementById('result');
+    const allowanceAmount = document.getElementById('allowanceAmount');
+    const moon = document.getElementById('moon');
+    const chaChing = document.getElementById('chaChing');
+
+    allowanceAmount.textContent = allowance.toFixed(2);
+    resultDiv.style.display = 'block';
+    resultDiv.style.opacity = '0';
+    setTimeout(() => {
+        resultDiv.style.opacity = '1';
+    }, 10);
+
+    // Moon glow effect
+    moon.style.animation = 'glow 1s ease-in-out 2';
+    setTimeout(() => {
+        moon.style.animation = 'float 4s infinite ease-in-out';
+    }, 2000);
+
+    // Confetti burst
+    confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: document.body.classList.contains('night-mode') ? ['#ff6f61', '#fff', '#1e3c72'] : ['#4682b4', '#ffd700', '#87ceeb']
+    });
+
+    // Play cha-ching sound
+    chaChing.currentTime = 0; // Reset to start
+    chaChing.play();
+});
+
+// Theme toggle
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.addEventListener('click', function() {
+    const body = document.body;
+    if (body.classList.contains('night-mode')) {
+        body.classList.remove('night-mode');
+        body.classList.add('day-mode');
+        themeToggle.textContent = 'Switch to Night Mode';
+    } else {
+        body.classList.remove('day-mode');
+        body.classList.add('night-mode');
+        themeToggle.textContent = 'Switch to Day Mode';
+    }
 });
