@@ -124,4 +124,95 @@ body.day-mode {
 }
 
 .day-mode .result-text {
-    text-shadow: 0 0 5px rgba(0, 0, 0,
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.moon {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    animation: float 4s infinite ease-in-out;
+    z-index: -1;
+}
+
+.night-mode .moon {
+    background: radial-gradient(circle, #fff 40%, #f0f0f0 60%, transparent 70%);
+}
+
+.day-mode .moon {
+    background: radial-gradient(circle, #ffd700 40%, #ffa500 60%, transparent 70%);
+}
+
+@keyframes glow {
+    0% { text-shadow: 0 0 10px currentColor; }
+    100% { text-shadow: 0 0 20px currentColor; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-20px); }
+}
+
+.gif-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.rupee {
+    position: absolute;
+    font-size: 20px;
+    color: #ffd700;
+    animation: fall 3s linear infinite;
+}
+@keyframes fall {
+    0% { transform: translateY(-100px); opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.slot {
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+    animation: spin 0.5s ease-in-out;
+}
+@keyframes spin {
+    0% { transform: translateY(-20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+.clock {
+    width: 100px;
+    height: 100px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    position: relative;
+    margin: 0 auto 20px;
+}
+.hour-hand, .minute-hand {
+    position: absolute;
+    background: #fff;
+    transform-origin: bottom;
+    left: 50%;
+    top: 50%;
+}
+.hour-hand { width: 2px; height: 30px; transform: rotate(0deg); }
+.minute-hand { width: 1px; height: 40px; transform: rotate(0deg); }
+.spin { animation: spinClock 1s linear; }
+@keyframes spinClock { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+@media (max-width: 767px) {
+    .ad-container ins {
+        width: 100% !important;
+        height: 50px !important;
+    }
+    .moon {
+        width: 40px;
+        height: 40px;
+    }
+}
