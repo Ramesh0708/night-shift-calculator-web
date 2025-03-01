@@ -14,6 +14,7 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
     const allowanceAmount = document.getElementById('allowanceAmount');
     const moon = document.getElementById('moon');
     const chaChing = document.getElementById('chaChing');
+    const resultGif = document.getElementById('resultGif');
 
     allowanceAmount.textContent = allowance.toFixed(2);
     resultDiv.style.display = 'block';
@@ -36,9 +37,17 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
         colors: document.body.classList.contains('night-mode') ? ['#ff6f61', '#fff', '#1e3c72'] : ['#4682b4', '#ffd700', '#87ceeb']
     });
 
-    // Play cha-ching sound
-    chaChing.currentTime = 0; // Reset to start
-    chaChing.play();
+    // Play ATM sound
+    chaChing.currentTime = 0;
+    chaChing.play().catch(error => {
+        console.log('Audio play failed:', error);
+    });
+
+    // Show GIF and hide after 3 seconds
+    resultGif.style.display = 'block';
+    setTimeout(() => {
+        resultGif.style.display = 'none';
+    }, 3000);
 });
 
 // Theme toggle
