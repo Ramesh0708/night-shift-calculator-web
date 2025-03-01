@@ -40,8 +40,10 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
         console.log('Audio play failed:', error);
     });
 
+    console.log('Showing GIF'); // Debug log
     resultGif.style.display = 'block';
     setTimeout(() => {
+        console.log('Hiding GIF'); // Debug log
         resultGif.style.display = 'none';
     }, 3000);
 });
