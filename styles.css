@@ -168,3 +168,10 @@ body.day-mode {
         height: 40px;
     }
 }
+
+/* Add this if not already in your styles.css */
+.gif-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
