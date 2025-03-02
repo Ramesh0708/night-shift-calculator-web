@@ -47,7 +47,7 @@ body.day-mode {
 
 .day-mode .card {
     background: rgba(255, 255, 255, 0.9);
-   171671_2436988-lq.mp3color: #333;
+    color: #333;
 }
 
 .form-label {
@@ -75,4 +75,226 @@ body.day-mode {
 }
 
 .day-mode .input-glow:focus {
-    box-shadow: 0 0 10px rgba(0, 123, 255
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+    background: rgba(255, 255, 255, 1);
+}
+
+.calc-btn {
+    border: none;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.night-mode .calc-btn {
+    background: #ff6f61;
+}
+
+.day-mode .calc-btn {
+    background: #4682b4;
+}
+
+.calc-btn:hover {
+    transform: scale(1.05);
+}
+
+.night-mode .calc-btn:hover {
+    box-shadow: 0 0 15px rgba(255, 111, 97, 0.8);
+}
+
+.day-mode .calc-btn:hover {
+    box-shadow: 0 0 15px rgba(70, 130, 180, 0.8);
+}
+
+#result {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.result-text {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.night-mode .result-text {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.day-mode .result-text {
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.night-mode #message {
+    color: #ffd700;
+}
+
+.day-mode #message {
+    color: #ff6f61;
+}
+
+.night-mode #investTip {
+    color: #00bcd4;
+}
+
+.day-mode #investTip {
+    color: #0288d1;
+}
+
+.rupee {
+    position: absolute;
+    font-size: 24px;
+    animation: fall 8s linear infinite;
+}
+
+.night-mode .rupee {
+    color: #ffd700;
+}
+
+.day-mode .rupee {
+    color: #ff4500;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-100px); opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.slot {
+    display: inline-block;
+    width: 120px;
+    text-align: center;
+    animation: spin 0.5s ease-in-out;
+    position: relative;
+}
+
+@keyframes spin {
+    0% { transform: translateY(-20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Sun/Moon Slide Toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(46px);
+}
+
+.sun, .moon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.sun { left: 10px; }
+.moon { right: 10px; }
+
+/* Footer Styles */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(255, 255, 255, 0.2));
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.night-mode .footer {
+    background: linear-gradient(135deg, rgba(30, 60, 114, 0.7), rgba(42, 82, 152, 0.7));
+}
+
+.day-mode .footer {
+    background: linear-gradient(135deg, rgba(135, 206, 235, 0.7), rgba(240, 248, 255, 0.7));
+}
+
+.footer-text {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.night-mode .footer-text {
+    color: #fff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.day-mode .footer-text {
+    color: #333;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.year {
+    color: #ff6f61;
+    font-weight: 700;
+}
+
+.name {
+    color: #ffd700;
+    font-style: italic;
+    padding: 0 5px;
+    transition: color 0.3s ease;
+}
+
+.name:hover {
+    color: #ff4500;
+}
+
+@media (max-width: 767px) {
+    .ad-container ins {
+        width: 100% !important;
+        height: 50px !important;
+    }
+    .footer-text {
+        font-size: 10px;
+    }
+}
