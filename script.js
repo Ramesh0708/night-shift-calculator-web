@@ -23,4 +23,58 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
         spins++;
         if (spins > 5) {
             clearInterval(spinInterval);
-            allowanceAmount.textContent = allowance
+            allowanceAmount.textContent = allowance.toFixed(2);
+        }
+    }, 100);
+
+    resultDiv.style.display = 'block';
+    resultDiv.style.opacity = '0';
+    setTimeout(() => {
+        resultDiv.style.opacity = '1';
+    }, 10);
+
+    // Currency rain - Increased to 100 symbols
+    for (let i = 0; i < 100; i++) {
+        const rupee = document.createElement('div');
+        rupee.textContent = '₹';
+        rupee.className = 'rupee';
+        rupee.style.left = `${Math.random() * 100}%`;
+        rupee.style.animationDelay = `${Math.random() * 2}s`;
+        rainContainer.appendChild(rupee);
+        setTimeout(() => rupee.remove(), 8000); // Matches 8s animation
+    }
+
+    // Celebration message
+    const messages = [
+        "Time to treat yourself, boss!",
+        "Paisa hi paisa hoga!",
+        "Night shift pays off!",
+        "Ka-ching, you’re rich!"
+    ];
+    message.textContent = messages[Math.floor(Math.random() * messages.length)];
+    message.style.display = 'block';
+    setTimeout(() => message.style.display = 'none', 3000);
+
+    // Investing tip
+    const tips = [
+        "Tip: Invest in a mutual fund for steady growth!",
+        "Tip: Try a fixed deposit for safe returns!",
+        "Tip: Sip some cash into an SIP each month!",
+        "Tip: Buy some stocks—risk it for the biscuit!"
+    ];
+    investTip.textContent = tips[Math.floor(Math.random() * tips.length)];
+    investTip.style.display = 'block';
+    setTimeout(() => investTip.style.display = 'none', 5000); // Shows for 5s
+});
+
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.addEventListener('change', function() {
+    const body = document.body;
+    if (this.checked) {
+        body.classList.remove('night-mode');
+        body.classList.add('day-mode');
+    } else {
+        body.classList.remove('day-mode');
+        body.classList.add('night-mode');
+    }
+});
