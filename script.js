@@ -16,7 +16,7 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
     const investTip = document.getElementById('investTip');
     const rainContainer = document.getElementById('currencyRain');
 
-    // Slot machine effect - Fixed to stop after final value
+    // Slot machine effect - Stop after 5 spins
     let spins = 0;
     const spinInterval = setInterval(() => {
         allowanceAmount.textContent = (Math.random() * 10000).toFixed(2);
@@ -24,6 +24,7 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
         if (spins >= 5) {
             clearInterval(spinInterval);
             allowanceAmount.textContent = allowance.toFixed(2);
+            allowanceAmount.style.animation = 'none'; // Reset animation
         }
     }, 100);
 
