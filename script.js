@@ -32,15 +32,15 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
         resultDiv.style.opacity = '1';
     }, 10);
 
-    // Currency rain
-    for (let i = 0; i < 20; i++) {
+    // Currency rain - 50 symbols
+    for (let i = 0; i < 50; i++) {
         const rupee = document.createElement('div');
         rupee.textContent = '₹';
         rupee.className = 'rupee';
         rupee.style.left = `${Math.random() * 100}%`;
         rupee.style.animationDelay = `${Math.random() * 2}s`;
         rainContainer.appendChild(rupee);
-        setTimeout(() => rupee.remove(), 3000);
+        setTimeout(() => rupee.remove(), 5000);
     }
 
     // Celebration message
