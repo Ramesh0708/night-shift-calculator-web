@@ -127,12 +127,28 @@ body.day-mode {
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
+.night-mode #message {
+    color: #ffd700;
+}
+
+.day-mode #message {
+    color: #ff6f61;
+}
+
 .rupee {
     position: absolute;
-    font-size: 20px;
-    color: #ffd700;
-    animation: fall 3s linear infinite;
+    font-size: 24px;
+    animation: fall 5s linear infinite;
 }
+
+.night-mode .rupee {
+    color: #ffd700;
+}
+
+.day-mode .rupee {
+    color: #ff4500;
+}
+
 @keyframes fall {
     0% { transform: translateY(-100px); opacity: 1; }
     100% { transform: translateY(100vh); opacity: 0; }
@@ -144,6 +160,7 @@ body.day-mode {
     text-align: center;
     animation: spin 0.5s ease-in-out;
 }
+
 @keyframes spin {
     0% { transform: translateY(-20px); opacity: 0; }
     100% { transform: translateY(0); opacity: 1; }
@@ -205,9 +222,62 @@ input:checked + .slider:before {
 .sun { left: 8px; }
 .moon { right: 8px; }
 
+/* Footer Styles */
+.footer {
+    padding: 20px 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(255, 255, 255, 0.1));
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 40px;
+}
+
+.night-mode .footer {
+    background: linear-gradient(135deg, rgba(30, 60, 114, 0.5), rgba(42, 82, 152, 0.5));
+}
+
+.day-mode .footer {
+    background: linear-gradient(135deg, rgba(135, 206, 235, 0.5), rgba(240, 248, 255, 0.5));
+}
+
+.footer-text {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.night-mode .footer-text {
+    color: #fff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.day-mode .footer-text {
+    color: #333;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.year {
+    color: #ff6f61;
+    font-weight: 700;
+}
+
+.name {
+    color: #ffd700;
+    font-style: italic;
+    padding: 0 5px;
+    transition: color 0.3s ease;
+}
+
+.name:hover {
+    color: #ff4500;
+}
+
 @media (max-width: 767px) {
     .ad-container ins {
         width: 100% !important;
         height: 50px !important;
+    }
+    .footer-text {
+        font-size: 12px;
     }
 }
