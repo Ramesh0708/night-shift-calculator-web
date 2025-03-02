@@ -13,6 +13,7 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
     const resultDiv = document.getElementById('result');
     const allowanceAmount = document.getElementById('allowanceAmount');
     const message = document.getElementById('message');
+    const investTip = document.getElementById('investTip');
     const rainContainer = document.getElementById('currencyRain');
 
     // Slot machine effect
@@ -22,47 +23,4 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
         spins++;
         if (spins > 5) {
             clearInterval(spinInterval);
-            allowanceAmount.textContent = allowance.toFixed(2);
-        }
-    }, 100);
-
-    resultDiv.style.display = 'block';
-    resultDiv.style.opacity = '0';
-    setTimeout(() => {
-        resultDiv.style.opacity = '1';
-    }, 10);
-
-    // Currency rain - 50 symbols
-    for (let i = 0; i < 50; i++) {
-        const rupee = document.createElement('div');
-        rupee.textContent = '₹';
-        rupee.className = 'rupee';
-        rupee.style.left = `${Math.random() * 100}%`;
-        rupee.style.animationDelay = `${Math.random() * 2}s`;
-        rainContainer.appendChild(rupee);
-        setTimeout(() => rupee.remove(), 5000);
-    }
-
-    // Celebration message
-    const messages = [
-        "Time to treat yourself, boss!",
-        "Paisa hi paisa hoga!",
-        "Night shift pays off!",
-        "Ka-ching, you’re rich!"
-    ];
-    message.textContent = messages[Math.floor(Math.random() * messages.length)];
-    message.style.display = 'block';
-    setTimeout(() => message.style.display = 'none', 3000);
-});
-
-const themeToggle = document.getElementById('themeToggle');
-themeToggle.addEventListener('change', function() {
-    const body = document.body;
-    if (this.checked) {
-        body.classList.remove('night-mode');
-        body.classList.add('day-mode');
-    } else {
-        body.classList.remove('day-mode');
-        body.classList.add('night-mode');
-    }
-});
+            allowanceAmount.textContent = allowance
