@@ -117,6 +117,7 @@ body.day-mode {
 .result-text {
     font-size: 24px;
     font-weight: 600;
+    line-height: 1.2;
 }
 
 .night-mode .result-text {
@@ -164,9 +165,10 @@ body.day-mode {
 
 .slot {
     display: inline-block;
-    width: 100px;
+    width: 120px;
     text-align: center;
     animation: spin 0.5s ease-in-out;
+    position: relative;
 }
 
 @keyframes spin {
@@ -232,5 +234,64 @@ input:checked + .slider:before {
 
 /* Footer Styles */
 .footer {
-    padding: 20px 0;
-    background: linear-gradient(135deg, rgba
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 0; /* Reduced padding for less height */
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(255, 255, 255, 0.2));
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 10; /* Above rain */
+}
+
+.night-mode .footer {
+    background: linear-gradient(135deg, rgba(30, 60, 114, 0.7), rgba(42, 82, 152, 0.7));
+}
+
+.day-mode .footer {
+    background: linear-gradient(135deg, rgba(135, 206, 235, 0.7), rgba(240, 248, 255, 0.7));
+}
+
+.footer-text {
+    font-size: 12px; /* Slightly smaller for compactness */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.night-mode .footer-text {
+    color: #fff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.day-mode .footer-text {
+    color: #333;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.year {
+    color: #ff6f61;
+    font-weight: 700;
+}
+
+.name {
+    color: #ffd700;
+    font-style: italic;
+    padding: 0 5px;
+    transition: color 0.3s ease;
+}
+
+.name:hover {
+    color: #ff4500;
+}
+
+@media (max-width: 767px) {
+    .ad-container ins {
+        width: 100% !important;
+        height: 50px !important;
+    }
+    .footer-text {
+        font-size: 10px;
+    }
+}
