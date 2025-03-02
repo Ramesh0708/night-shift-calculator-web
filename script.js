@@ -16,12 +16,12 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
     const investTip = document.getElementById('investTip');
     const rainContainer = document.getElementById('currencyRain');
 
-    // Slot machine effect
+    // Slot machine effect - Fixed to stop after final value
     let spins = 0;
     const spinInterval = setInterval(() => {
         allowanceAmount.textContent = (Math.random() * 10000).toFixed(2);
         spins++;
-        if (spins > 5) {
+        if (spins >= 5) {
             clearInterval(spinInterval);
             allowanceAmount.textContent = allowance.toFixed(2);
         }
@@ -33,7 +33,7 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
         resultDiv.style.opacity = '1';
     }, 10);
 
-    // Currency rain - Increased to 100 symbols
+    // Currency rain - 100 symbols
     for (let i = 0; i < 100; i++) {
         const rupee = document.createElement('div');
         rupee.textContent = '₹';
@@ -41,7 +41,7 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
         rupee.style.left = `${Math.random() * 100}%`;
         rupee.style.animationDelay = `${Math.random() * 2}s`;
         rainContainer.appendChild(rupee);
-        setTimeout(() => rupee.remove(), 8000); // Matches 8s animation
+        setTimeout(() => rupee.remove(), 8000);
     }
 
     // Celebration message
@@ -64,7 +64,7 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
     ];
     investTip.textContent = tips[Math.floor(Math.random() * tips.length)];
     investTip.style.display = 'block';
-    setTimeout(() => investTip.style.display = 'none', 5000); // Shows for 5s
+    setTimeout(() => investTip.style.display = 'none', 5000);
 });
 
 const themeToggle = document.getElementById('themeToggle');
