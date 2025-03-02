@@ -24,7 +24,7 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
         if (spins >= 5) {
             clearInterval(spinInterval);
             allowanceAmount.textContent = allowance.toFixed(2);
-            allowanceAmount.style.animation = 'none'; // Reset animation
+            allowanceAmount.style.animation = 'none';
         }
     }, 100);
 
