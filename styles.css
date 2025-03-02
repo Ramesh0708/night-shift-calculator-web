@@ -110,4 +110,127 @@ body.day-mode {
 
 #result {
     display: none;
-    opacity: 0
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.result-text {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.night-mode .result-text {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.day-mode .result-text {
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.night-mode #message {
+    color: #ffd700;
+}
+
+.day-mode #message {
+    color: #ff6f61;
+}
+
+.night-mode #investTip {
+    color: #00bcd4;
+}
+
+.day-mode #investTip {
+    color: #0288d1;
+}
+
+.rupee {
+    position: absolute;
+    font-size: 24px;
+    animation: fall 8s linear infinite;
+}
+
+.night-mode .rupee {
+    color: #ffd700;
+}
+
+.day-mode .rupee {
+    color: #ff4500;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-100px); opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.slot {
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+    animation: spin 0.5s ease-in-out;
+}
+
+@keyframes spin {
+    0% { transform: translateY(-20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Sun/Moon Slide Toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(46px);
+}
+
+.sun, .moon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.sun { left: 10px; }
+.moon { right: 10px; }
+
+/* Footer Styles */
+.footer {
+    padding: 20px 0;
+    background: linear-gradient(135deg, rgba
