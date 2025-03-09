@@ -298,3 +298,49 @@ input:checked + .slider:before {
         font-size: 10px;
     }
 }
+
+/* Tip Display */
+#tipDisplay {
+    transition: background 0.5s ease;
+}
+
+.night-mode #tipDisplay {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.day-mode #tipDisplay {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+}
+
+/* Share Button */
+#shareResult {
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+.night-mode #shareResult {
+    background: #ffd700;
+    color: #1e3c72;
+}
+
+.day-mode #shareResult {
+    background: #ff4500;
+    color: #fff;
+}
+
+#shareResult:hover {
+    transform: scale(1.05);
+}
+
+/* General Section Styling */
+h3 {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.row.mt-5 p {
+    line-height: 1.6;
+}
