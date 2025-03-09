@@ -17,6 +17,8 @@ body.day-mode {
 
 .container {
     position: relative;
+        padding-bottom: 80px; /* Height of footer + some buffer */
+
 }
 
 .title-glow {
@@ -344,3 +346,53 @@ h3 {
 .row.mt-5 p {
     line-height: 1.6;
 }
+
+/* Footer refinement */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(255, 255, 255, 0.2));
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px; /* Fixed height for consistency */
+}
+
+.night-mode .footer {
+    background: linear-gradient(135deg, rgba(30, 60, 114, 0.7), rgba(42, 82, 152, 0.7));
+}
+
+.day-mode .footer {
+    background: linear-gradient(135deg, rgba(135, 206, 235, 0.7), rgba(240, 248, 255, 0.7));
+}
+
+/* Adjust footer text for better fit */
+.footer-text {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+    text-align: center;
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%; /* Prevent overflow on small screens */
+}
+
+@media (max-width: 767px) {
+    .footer-text {
+        font-size: 10px;
+        max-width: 85%;
+    }
+    .container {
+        padding-bottom: 60px; /* Smaller footer on mobile */
+    }
+}
+
+
