@@ -12,11 +12,12 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
     const allowance = (ctc / 240) * 0.25 * days;
     const resultDiv = document.getElementById('result');
     const allowanceAmount = document.getElementById('allowanceAmount');
+    const shareButton = document.getElementById('shareResult');
     const message = document.getElementById('message');
     const investTip = document.getElementById('investTip');
     const rainContainer = document.getElementById('currencyRain');
 
-    // Slot machine effect - Stop after 5 spins
+    // Slot machine effect
     let spins = 0;
     const spinInterval = setInterval(() => {
         allowanceAmount.textContent = (Math.random() * 10000).toFixed(2);
@@ -25,16 +26,15 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
             clearInterval(spinInterval);
             allowanceAmount.textContent = allowance.toFixed(2);
             allowanceAmount.style.animation = 'none';
+            shareButton.style.display = 'inline-block'; // Show share button
         }
     }, 100);
 
     resultDiv.style.display = 'block';
     resultDiv.style.opacity = '0';
-    setTimeout(() => {
-        resultDiv.style.opacity = '1';
-    }, 10);
+    setTimeout(() => resultDiv.style.opacity = '1', 10);
 
-    // Currency rain - 100 symbols
+    // Currency rain
     for (let i = 0; i < 100; i++) {
         const rupee = document.createElement('div');
         rupee.textContent = '₹';
@@ -66,8 +66,15 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
     investTip.textContent = tips[Math.floor(Math.random() * tips.length)];
     investTip.style.display = 'block';
     setTimeout(() => investTip.style.display = 'none', 5000);
+
+    // Share result
+    shareButton.onclick = () => {
+        const shareText = `I earned ₹${allowance.toFixed(2)} for ${days} night shifts with the Night Shift Allowance Calculator! Check it out: https://night-shift-calculator-ideas.netlify.app/`;
+        navigator.clipboard.writeText(shareText).then(() => alert('Result copied to clipboard! Share it with your friends!'));
+    };
 });
 
+// Theme toggle
 const themeToggle = document.getElementById('themeToggle');
 themeToggle.addEventListener('change', function() {
     const body = document.body;
@@ -79,3 +86,35 @@ themeToggle.addEventListener('change', function() {
         body.classList.add('night-mode');
     }
 });
+
+// Community tips
+document.getElementById('tipForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const tipInput = document.getElementById('tipInput');
+    const tipText = tipInput.value.trim();
+    if (tipText) {
+        let tips = JSON.parse(localStorage.getItem('nightShiftTips') || '[]');
+        tips.push(tipText);
+        localStorage.setItem('nightShiftTips', JSON.stringify(tips));
+        tipInput.value = '';
+        displayTips();
+    }
+});
+
+function displayTips() {
+    const tips = JSON.parse(localStorage.getItem('nightShiftTips') || '[]');
+    const tipDisplay = document.getElementById('tipDisplay');
+    if (tips.length === 0) {
+        tipDisplay.textContent = 'Submit a tip to see it here!';
+        return;
+    }
+    let index = 0;
+    tipDisplay.textContent = tips[index];
+    setInterval(() => {
+        index = (index + 1) % tips.length;
+        tipDisplay.textContent = tips[index];
+    }, 5000); // Rotate every 5 seconds
+}
+
+// Load tips on page load
+displayTips();
