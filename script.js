@@ -104,12 +104,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     },
                     body: JSON.stringify({ text: tipText })
                 });
+                const responseBody = await response.text(); // Get raw response for debugging
                 if (response.ok) {
                     console.log('Tip saved to Supabase:', tipText, 'at', new Date().toLocaleTimeString());
                     tipInput.value = '';
-                    fetchTips(); // Refresh tips
+                    fetchTips();
                 } else {
-                    throw new Error('Save failed: ' + response.statusText);
+                    throw new Error(`Save failed: ${response.status} - ${responseBody}`);
                 }
             } catch (error) {
                 console.error('Save error:', error);
