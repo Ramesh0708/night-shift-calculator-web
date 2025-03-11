@@ -23,11 +23,10 @@ function initializeFirebase() {
         displayTips(); // Start tips after Firebase is ready
     } catch (error) {
         console.error('Firebase initialization failed:', error);
-        fallbackLocalTips(); // Fallback to local if Firebase fails
+        fallbackLocalTips();
     }
 }
 
-// Start Firebase initialization
 initializeFirebase();
 
 // Calculator logic
@@ -127,10 +126,11 @@ document.getElementById('tipForm').addEventListener('submit', function(event) {
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
                 tipInput.value = '';
-                console.log('Tip added to Firebase');
+                console.log('Tip added to Firebase:', tipText);
+                // No need to call displayTips() here—onSnapshot handles it
             }).catch(error => {
                 console.error('Error adding tip:', error);
-                alert('Failed to save tip to cloud—saved locally instead.');
+                alert('Failed to save tip to cloud—saved locally.');
                 saveTipLocally(tipText);
             });
         } else {
@@ -152,25 +152,29 @@ function displayTips() {
     const tipDisplay = document.getElementById('tipDisplay');
     if (!db) {
         tipDisplay.textContent = 'Loading tips...';
-        console.log('Firebase not ready—using local tips');
+        console.log('Firebase not ready—falling back to local tips');
         fallbackLocalTips();
         return;
     }
 
-    let tips = [];
+    console.log('Setting up Firestore listener...');
     db.collection('tips').orderBy('timestamp', 'desc').limit(10).onSnapshot(snapshot => {
-        tips = snapshot.docs.map(doc => doc.data().text);
+        console.log('Firestore snapshot received:', snapshot.docs.length, 'tips');
+        const tips = snapshot.docs.map(doc => doc.data().text);
         if (tips.length === 0) {
             tipDisplay.textContent = 'No tips yet—be the first!';
-            return;
-        }
-        let index = 0;
-        tipDisplay.textContent = tips[index];
-        clearInterval(window.tipInterval);
-        window.tipInterval = setInterval(() => {
-            index = (index + 1) % tips.length;
+            console.log('No tips in Firestore');
+        } else {
+            let index = 0;
             tipDisplay.textContent = tips[index];
-        }, 5000);
+            console.log('Displaying tip:', tips[index]);
+            clearInterval(window.tipInterval);
+            window.tipInterval = setInterval(() => {
+                index = (index + 1) % tips.length;
+                tipDisplay.textContent = tips[index];
+                console.log('Rotating to tip:', tips[index]);
+            }, 5000);
+        }
     }, error => {
         console.error('Error fetching tips:', error);
         tipDisplay.textContent = 'Error loading tips—using local fallback.';
@@ -183,13 +187,13 @@ function fallbackLocalTips() {
     const tipDisplay = document.getElementById('tipDisplay');
     if (tips.length === 0) {
         tipDisplay.textContent = 'Submit a tip to see it here!';
-        return;
-    }
-    let index = 0;
-    tipDisplay.textContent = tips[index];
-    clearInterval(window.tipInterval);
-    window.tipInterval = setInterval(() => {
-        index = (index + 1) % tips.length;
+    } else {
+        let index = 0;
         tipDisplay.textContent = tips[index];
-    }, 5000);
+        clearInterval(window.tipInterval);
+        window.tipInterval = setInterval(() => {
+            index = (index + 1) % tips.length;
+            tipDisplay.textContent = tips[index];
+        }, 5000);
+    }
 }
