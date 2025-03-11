@@ -11,6 +11,11 @@ const firebaseConfig = {
 // Initialize Firebase safely
 let db;
 function initializeFirebase() {
+    if (typeof firebase === 'undefined') {
+        console.log('Firebase SDK not loaded yet—retrying in 1s');
+        setTimeout(initializeFirebase, 1000);
+        return;
+    }
     try {
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
@@ -18,17 +23,12 @@ function initializeFirebase() {
         displayTips(); // Start tips after Firebase is ready
     } catch (error) {
         console.error('Firebase initialization failed:', error);
-        fallbackLocalTips(); // Use local storage if Firebase fails
+        fallbackLocalTips(); // Fallback to local if Firebase fails
     }
 }
 
-// Check if Firebase is loaded, then initialize
-if (typeof firebase !== 'undefined') {
-    initializeFirebase();
-} else {
-    console.log('Firebase SDK not loaded yet—waiting...');
-    setTimeout(initializeFirebase, 1000); // Retry after 1s
-}
+// Start Firebase initialization
+initializeFirebase();
 
 // Calculator logic
 document.getElementById('calculatorForm').addEventListener('submit', function(event) {
@@ -130,7 +130,7 @@ document.getElementById('tipForm').addEventListener('submit', function(event) {
                 console.log('Tip added to Firebase');
             }).catch(error => {
                 console.error('Error adding tip:', error);
-                alert('Failed to save tip—falling back to local storage.');
+                alert('Failed to save tip to cloud—saved locally instead.');
                 saveTipLocally(tipText);
             });
         } else {
@@ -193,5 +193,3 @@ function fallbackLocalTips() {
         tipDisplay.textContent = tips[index];
     }, 5000);
 }
-
-displayTips();
