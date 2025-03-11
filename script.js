@@ -1,3 +1,17 @@
+// Initialize Firebase (replace with your config)
+const firebaseConfig = {
+    apiKey: "IzaSyCBBKMKIJ8V4zriCrfG9ZqvAh9LW_nMCxM",
+    authDomain: "nightshiftcalculator.firebaseapp.com",
+    projectId: "nightshiftcalculator",
+    storageBucket: "nightshiftcalculator.firebasestorage.app",
+    messagingSenderId: "804931239067",
+    appId: "1:804931239067:web:9a81be5764444bf6ec1a3e"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// Existing calculator logic
 document.getElementById('calculatorForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -17,7 +31,6 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
     const investTip = document.getElementById('investTip');
     const rainContainer = document.getElementById('currencyRain');
 
-    // Slot machine effect
     let spins = 0;
     const spinInterval = setInterval(() => {
         allowanceAmount.textContent = (Math.random() * 10000).toFixed(2);
@@ -26,7 +39,7 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
             clearInterval(spinInterval);
             allowanceAmount.textContent = allowance.toFixed(2);
             allowanceAmount.style.animation = 'none';
-            shareButton.style.display = 'inline-block'; // Show share button
+            shareButton.style.display = 'inline-block';
         }
     }, 100);
 
@@ -34,7 +47,6 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
     resultDiv.style.opacity = '0';
     setTimeout(() => resultDiv.style.opacity = '1', 10);
 
-    // Currency rain
     for (let i = 0; i < 100; i++) {
         const rupee = document.createElement('div');
         rupee.textContent = '₹';
@@ -45,7 +57,6 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
         setTimeout(() => rupee.remove(), 8000);
     }
 
-    // Celebration message
     const messages = [
         "Time to treat yourself, boss!",
         "Paisa hi paisa hoga!",
@@ -56,7 +67,6 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
     message.style.display = 'block';
     setTimeout(() => message.style.display = 'none', 3000);
 
-    // Investing tip
     const tips = [
         "Tip: Invest in a mutual fund for steady growth!",
         "Tip: Try a fixed deposit for safe returns!",
@@ -67,7 +77,6 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
     investTip.style.display = 'block';
     setTimeout(() => investTip.style.display = 'none', 5000);
 
-    // Share result
     shareButton.onclick = () => {
         const shareText = `I earned ₹${allowance.toFixed(2)} for ${days} night shifts with the Night Shift Allowance Calculator! Check it out: https://night-shift-calculator-ideas.netlify.app/`;
         navigator.clipboard.writeText(shareText).then(() => alert('Result copied to clipboard! Share it with your friends!'));
@@ -87,33 +96,41 @@ themeToggle.addEventListener('change', function() {
     }
 });
 
-// Community tips
+// Community tips with Firebase
 document.getElementById('tipForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const tipInput = document.getElementById('tipInput');
     const tipText = tipInput.value.trim();
     if (tipText) {
-        let tips = JSON.parse(localStorage.getItem('nightShiftTips') || '[]');
-        tips.push(tipText);
-        localStorage.setItem('nightShiftTips', JSON.stringify(tips));
-        tipInput.value = '';
-        displayTips();
+        db.collection('tips').add({
+            text: tipText,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+            tipInput.value = '';
+        }).catch(error => console.error('Error adding tip:', error));
     }
 });
 
 function displayTips() {
-    const tips = JSON.parse(localStorage.getItem('nightShiftTips') || '[]');
     const tipDisplay = document.getElementById('tipDisplay');
-    if (tips.length === 0) {
-        tipDisplay.textContent = 'Submit a tip to see it here!';
-        return;
-    }
-    let index = 0;
-    tipDisplay.textContent = tips[index];
-    setInterval(() => {
-        index = (index + 1) % tips.length;
+    let tips = [];
+    db.collection('tips').orderBy('timestamp', 'desc').limit(10).onSnapshot(snapshot => {
+        tips = snapshot.docs.map(doc => doc.data().text);
+        if (tips.length === 0) {
+            tipDisplay.textContent = 'No tips yet—be the first!';
+            return;
+        }
+        let index = 0;
         tipDisplay.textContent = tips[index];
-    }, 5000); // Rotate every 5 seconds
+        clearInterval(window.tipInterval); // Clear any existing interval
+        window.tipInterval = setInterval(() => {
+            index = (index + 1) % tips.length;
+            tipDisplay.textContent = tips[index];
+        }, 5000);
+    }, error => {
+        console.error('Error fetching tips:', error);
+        tipDisplay.textContent = 'Error loading tips.';
+    });
 }
 
 // Load tips on page load
