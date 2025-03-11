@@ -10,11 +10,24 @@ const firebaseConfig = {
 
 // Initialize Firebase safely
 let db;
-try {
-    firebase.initializeApp(firebaseConfig);
-    db = firebase.firestore();
-} catch (error) {
-    console.error('Firebase initialization failed:', error);
+function initializeFirebase() {
+    try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+        console.log('Firebase initialized successfully');
+        displayTips(); // Start tips after Firebase is ready
+    } catch (error) {
+        console.error('Firebase initialization failed:', error);
+        fallbackLocalTips(); // Use local storage if Firebase fails
+    }
+}
+
+// Check if Firebase is loaded, then initialize
+if (typeof firebase !== 'undefined') {
+    initializeFirebase();
+} else {
+    console.log('Firebase SDK not loaded yet—waiting...');
+    setTimeout(initializeFirebase, 1000); // Retry after 1s
 }
 
 // Calculator logic
@@ -75,4 +88,110 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
 
     const tips = [
         "Tip: Invest in a mutual fund for steady growth!",
-        "Tip: Try a fixed deposit for safe
+        "Tip: Try a fixed deposit for safe returns!",
+        "Tip: Sip some cash into an SIP each month!",
+        "Tip: Buy some stocks—risk it for the biscuit!"
+    ];
+    investTip.textContent = tips[Math.floor(Math.random() * tips.length)];
+    investTip.style.display = 'block';
+    setTimeout(() => investTip.style.display = 'none', 5000);
+
+    shareButton.onclick = () => {
+        const shareText = `I earned ₹${allowance.toFixed(2)} for ${days} night shifts with the Night Shift Allowance Calculator! Check it out: https://night-shift-calculator-ideas.netlify.app/`;
+        navigator.clipboard.writeText(shareText).then(() => alert('Result copied to clipboard! Share it with your friends!'));
+    };
+});
+
+// Theme toggle
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.addEventListener('change', function() {
+    const body = document.body;
+    if (this.checked) {
+        body.classList.remove('night-mode');
+        body.classList.add('day-mode');
+    } else {
+        body.classList.remove('day-mode');
+        body.classList.add('night-mode');
+    }
+});
+
+// Community tips with Firebase
+document.getElementById('tipForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const tipInput = document.getElementById('tipInput');
+    const tipText = tipInput.value.trim();
+    if (tipText) {
+        if (db) {
+            db.collection('tips').add({
+                text: tipText,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                tipInput.value = '';
+                console.log('Tip added to Firebase');
+            }).catch(error => {
+                console.error('Error adding tip:', error);
+                alert('Failed to save tip—falling back to local storage.');
+                saveTipLocally(tipText);
+            });
+        } else {
+            console.log('Firebase not ready—saving locally');
+            saveTipLocally(tipText);
+            tipInput.value = '';
+        }
+    }
+});
+
+function saveTipLocally(tipText) {
+    let tips = JSON.parse(localStorage.getItem('nightShiftTips') || '[]');
+    tips.push(tipText);
+    localStorage.setItem('nightShiftTips', JSON.stringify(tips));
+    displayTips();
+}
+
+function displayTips() {
+    const tipDisplay = document.getElementById('tipDisplay');
+    if (!db) {
+        tipDisplay.textContent = 'Loading tips...';
+        console.log('Firebase not ready—using local tips');
+        fallbackLocalTips();
+        return;
+    }
+
+    let tips = [];
+    db.collection('tips').orderBy('timestamp', 'desc').limit(10).onSnapshot(snapshot => {
+        tips = snapshot.docs.map(doc => doc.data().text);
+        if (tips.length === 0) {
+            tipDisplay.textContent = 'No tips yet—be the first!';
+            return;
+        }
+        let index = 0;
+        tipDisplay.textContent = tips[index];
+        clearInterval(window.tipInterval);
+        window.tipInterval = setInterval(() => {
+            index = (index + 1) % tips.length;
+            tipDisplay.textContent = tips[index];
+        }, 5000);
+    }, error => {
+        console.error('Error fetching tips:', error);
+        tipDisplay.textContent = 'Error loading tips—using local fallback.';
+        fallbackLocalTips();
+    });
+}
+
+function fallbackLocalTips() {
+    const tips = JSON.parse(localStorage.getItem('nightShiftTips') || '[]');
+    const tipDisplay = document.getElementById('tipDisplay');
+    if (tips.length === 0) {
+        tipDisplay.textContent = 'Submit a tip to see it here!';
+        return;
+    }
+    let index = 0;
+    tipDisplay.textContent = tips[index];
+    clearInterval(window.tipInterval);
+    window.tipInterval = setInterval(() => {
+        index = (index + 1) % tips.length;
+        tipDisplay.textContent = tips[index];
+    }, 5000);
+}
+
+displayTips();
