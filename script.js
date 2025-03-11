@@ -19,12 +19,24 @@ function initializeFirebase() {
     try {
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
-        console.log('Firebase initialized successfully at', new Date().toLocaleTimeString());
-        displayTips(); // Start listener
+        console.log('Firebase initialized at', new Date().toLocaleTimeString());
+        testFirestoreConnection(); // Test write on init
+        displayTips();
     } catch (error) {
         console.error('Firebase init failed:', error);
         fallbackLocalTips();
     }
+}
+
+// Test Firestore connectivity
+function testFirestoreConnection() {
+    db.collection('test').doc('init').set({
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        console.log('Test write to Firestore succeeded');
+    }).catch(error => {
+        console.error('Test write failed:', error);
+    });
 }
 
 initializeFirebase();
@@ -120,15 +132,16 @@ document.getElementById('tipForm').addEventListener('submit', function(event) {
     const tipText = tipInput.value.trim();
     if (tipText) {
         if (db) {
+            console.log('Attempting to save tip:', tipText);
             db.collection('tips').add({
                 text: tipText,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
                 tipInput.value = '';
-                console.log('Tip saved to Firebase:', tipText, 'at', new Date().toLocaleTimeString());
+                console.log('Tip saved:', tipText, 'at', new Date().toLocaleTimeString());
             }).catch(error => {
-                console.error('Failed to save tip:', error);
-                alert('Tip save failed—using local storage.');
+                console.error('Save tip failed:', error);
+                alert('Failed to save to cloud—saved locally.');
                 saveTipLocally(tipText);
             });
         } else {
@@ -143,35 +156,35 @@ function saveTipLocally(tipText) {
     let tips = JSON.parse(localStorage.getItem('nightShiftTips') || '[]');
     tips.push(tipText);
     localStorage.setItem('nightShiftTips', JSON.stringify(tips));
-    console.log('Tip saved locally:', tipText);
+    console.log('Saved locally:', tipText);
     fallbackLocalTips();
 }
 
 function displayTips() {
     const tipDisplay = document.getElementById('tipDisplay');
     if (!db) {
-        console.log('Firebase not ready—using local tips');
+        console.log('Firebase not ready—falling back');
         tipDisplay.textContent = 'Loading tips...';
         fallbackLocalTips();
         return;
     }
 
-    console.log('Starting Firestore listener...');
+    console.log('Starting listener...');
     db.collection('tips').orderBy('timestamp', 'desc').limit(10).onSnapshot(snapshot => {
-        console.log('Snapshot received with', snapshot.docs.length, 'tips at', new Date().toLocaleTimeString());
+        console.log('Snapshot:', snapshot.docs.length, 'tips at', new Date().toLocaleTimeString());
         const tips = snapshot.docs.map(doc => doc.data().text);
         if (tips.length === 0) {
             tipDisplay.textContent = 'No tips yet—be the first!';
-            console.log('No tips found in Firestore');
+            console.log('No tips in Firestore');
         } else {
             let index = 0;
             tipDisplay.textContent = tips[index];
-            console.log('Showing tip:', tips[index]);
+            console.log('Showing:', tips[index]);
             clearInterval(window.tipInterval);
             window.tipInterval = setInterval(() => {
                 index = (index + 1) % tips.length;
                 tipDisplay.textContent = tips[index];
-                console.log('Rotating to tip:', tips[index]);
+                console.log('Rotating to:', tips[index]);
             }, 5000);
         }
     }, error => {
