@@ -104,11 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     },
                     body: JSON.stringify({ text: tipText })
                 });
-                const responseBody = await response.text(); // Get raw response for debugging
+                const responseBody = await response.text();
                 if (response.ok) {
-                    console.log('Tip saved to Supabase:', tipText, 'at', new Date().toLocaleTimeString());
+                    console.log('Tip saved:', tipText, 'at', new Date().toLocaleTimeString());
                     tipInput.value = '';
-                    fetchTips();
+                    fetchTips(); // Immediate update after save
                 } else {
                     throw new Error(`Save failed: ${response.status} - ${responseBody}`);
                 }
@@ -121,8 +121,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initial fetch
-    fetchTips();
+    // Start polling for tips
+    fetchTips(); // Initial fetch
+    setInterval(fetchTips, 10000); // Poll every 10 seconds
 });
 
 // Tip functions
@@ -144,38 +145,22 @@ async function fetchTips() {
         });
         if (!response.ok) throw new Error('Fetch failed: ' + response.statusText);
         const tips = await response.json();
-        console.log('Fetched tips:', tips.length, 'at', new Date().toLocaleTimeString());
+        console.log('Fetched:', tips.length, 'tips at', new Date().toLocaleTimeString());
 
         if (tips.length === 0) {
             tipDisplay.textContent = 'No tips yet—be the first!';
         } else {
-            let index = 0;
-            tipDisplay.textContent = tips[index].text;
-            clearInterval(window.tipInterval);
-            window.tipInterval = setInterval(() => {
-                index = (index + 1) % tips.length;
+            // Only update if new tips differ to avoid resetting rotation
+            const currentTip = tipDisplay.textContent;
+            if (!tips.some(tip => tip.text === currentTip)) {
+                let index = 0;
                 tipDisplay.textContent = tips[index].text;
-            }, 5000);
+                clearInterval(window.tipInterval);
+                window.tipInterval = setInterval(() => {
+                    index = (index + 1) % tips.length;
+                    tipDisplay.textContent = tips[index].text;
+                }, 5000);
+            }
         }
     } catch (error) {
-        console.error('Fetch error:', error);
-        tipDisplay.textContent = 'Error loading tips—using local.';
-        displayLocalTips();
-    }
-}
-
-function displayLocalTips() {
-    const tips = JSON.parse(localStorage.getItem('nightShiftTips') || '[]');
-    const tipDisplay = document.getElementById('tipDisplay');
-    if (tips.length === 0) {
-        tipDisplay.textContent = 'Submit a tip to see it here!';
-    } else {
-        let index = 0;
-        tipDisplay.textContent = tips[index];
-        clearInterval(window.tipInterval);
-        window.tipInterval = setInterval(() => {
-            index = (index + 1) % tips.length;
-            tipDisplay.textContent = tips[index];
-        }, 5000);
-    }
-}
+        console.error
