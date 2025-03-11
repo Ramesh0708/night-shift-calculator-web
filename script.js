@@ -12,17 +12,17 @@ const firebaseConfig = {
 let db;
 function initializeFirebase() {
     if (typeof firebase === 'undefined') {
-        console.log('Firebase SDK not loaded yet—retrying in 1s');
+        console.log('Firebase SDK not loaded—retrying in 1s');
         setTimeout(initializeFirebase, 1000);
         return;
     }
     try {
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
-        console.log('Firebase initialized successfully');
-        displayTips(); // Start tips after Firebase is ready
+        console.log('Firebase initialized successfully at', new Date().toLocaleTimeString());
+        displayTips(); // Start listener
     } catch (error) {
-        console.error('Firebase initialization failed:', error);
+        console.error('Firebase init failed:', error);
         fallbackLocalTips();
     }
 }
@@ -102,8 +102,7 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
 });
 
 // Theme toggle
-const themeToggle = document.getElementById('themeToggle');
-themeToggle.addEventListener('change', function() {
+document.getElementById('themeToggle').addEventListener('change', function() {
     const body = document.body;
     if (this.checked) {
         body.classList.remove('night-mode');
@@ -126,11 +125,10 @@ document.getElementById('tipForm').addEventListener('submit', function(event) {
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
                 tipInput.value = '';
-                console.log('Tip added to Firebase:', tipText);
-                // No need to call displayTips() here—onSnapshot handles it
+                console.log('Tip saved to Firebase:', tipText, 'at', new Date().toLocaleTimeString());
             }).catch(error => {
-                console.error('Error adding tip:', error);
-                alert('Failed to save tip to cloud—saved locally.');
+                console.error('Failed to save tip:', error);
+                alert('Tip save failed—using local storage.');
                 saveTipLocally(tipText);
             });
         } else {
@@ -145,29 +143,30 @@ function saveTipLocally(tipText) {
     let tips = JSON.parse(localStorage.getItem('nightShiftTips') || '[]');
     tips.push(tipText);
     localStorage.setItem('nightShiftTips', JSON.stringify(tips));
-    displayTips();
+    console.log('Tip saved locally:', tipText);
+    fallbackLocalTips();
 }
 
 function displayTips() {
     const tipDisplay = document.getElementById('tipDisplay');
     if (!db) {
+        console.log('Firebase not ready—using local tips');
         tipDisplay.textContent = 'Loading tips...';
-        console.log('Firebase not ready—falling back to local tips');
         fallbackLocalTips();
         return;
     }
 
-    console.log('Setting up Firestore listener...');
+    console.log('Starting Firestore listener...');
     db.collection('tips').orderBy('timestamp', 'desc').limit(10).onSnapshot(snapshot => {
-        console.log('Firestore snapshot received:', snapshot.docs.length, 'tips');
+        console.log('Snapshot received with', snapshot.docs.length, 'tips at', new Date().toLocaleTimeString());
         const tips = snapshot.docs.map(doc => doc.data().text);
         if (tips.length === 0) {
             tipDisplay.textContent = 'No tips yet—be the first!';
-            console.log('No tips in Firestore');
+            console.log('No tips found in Firestore');
         } else {
             let index = 0;
             tipDisplay.textContent = tips[index];
-            console.log('Displaying tip:', tips[index]);
+            console.log('Showing tip:', tips[index]);
             clearInterval(window.tipInterval);
             window.tipInterval = setInterval(() => {
                 index = (index + 1) % tips.length;
@@ -176,8 +175,8 @@ function displayTips() {
             }, 5000);
         }
     }, error => {
-        console.error('Error fetching tips:', error);
-        tipDisplay.textContent = 'Error loading tips—using local fallback.';
+        console.error('Listener error:', error);
+        tipDisplay.textContent = 'Error loading tips—using local.';
         fallbackLocalTips();
     });
 }
