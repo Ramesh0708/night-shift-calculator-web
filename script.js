@@ -1,17 +1,3 @@
-// Initialize Firebase (replace with your config)
-const firebaseConfig = {
-    apiKey: "IzaSyCBBKMKIJ8V4zriCrfG9ZqvAh9LW_nMCxM",
-    authDomain: "nightshiftcalculator.firebaseapp.com",
-    projectId: "nightshiftcalculator",
-    storageBucket: "nightshiftcalculator.firebasestorage.app",
-    messagingSenderId: "804931239067",
-    appId: "1:804931239067:web:9a81be5764444bf6ec1a3e"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// Existing calculator logic
 document.getElementById('calculatorForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -70,68 +56,4 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
     const tips = [
         "Tip: Invest in a mutual fund for steady growth!",
         "Tip: Try a fixed deposit for safe returns!",
-        "Tip: Sip some cash into an SIP each month!",
-        "Tip: Buy some stocks—risk it for the biscuit!"
-    ];
-    investTip.textContent = tips[Math.floor(Math.random() * tips.length)];
-    investTip.style.display = 'block';
-    setTimeout(() => investTip.style.display = 'none', 5000);
-
-    shareButton.onclick = () => {
-        const shareText = `I earned ₹${allowance.toFixed(2)} for ${days} night shifts with the Night Shift Allowance Calculator! Check it out: https://night-shift-calculator-ideas.netlify.app/`;
-        navigator.clipboard.writeText(shareText).then(() => alert('Result copied to clipboard! Share it with your friends!'));
-    };
-});
-
-// Theme toggle
-const themeToggle = document.getElementById('themeToggle');
-themeToggle.addEventListener('change', function() {
-    const body = document.body;
-    if (this.checked) {
-        body.classList.remove('night-mode');
-        body.classList.add('day-mode');
-    } else {
-        body.classList.remove('day-mode');
-        body.classList.add('night-mode');
-    }
-});
-
-// Community tips with Firebase
-document.getElementById('tipForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const tipInput = document.getElementById('tipInput');
-    const tipText = tipInput.value.trim();
-    if (tipText) {
-        db.collection('tips').add({
-            text: tipText,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        }).then(() => {
-            tipInput.value = '';
-        }).catch(error => console.error('Error adding tip:', error));
-    }
-});
-
-function displayTips() {
-    const tipDisplay = document.getElementById('tipDisplay');
-    let tips = [];
-    db.collection('tips').orderBy('timestamp', 'desc').limit(10).onSnapshot(snapshot => {
-        tips = snapshot.docs.map(doc => doc.data().text);
-        if (tips.length === 0) {
-            tipDisplay.textContent = 'No tips yet—be the first!';
-            return;
-        }
-        let index = 0;
-        tipDisplay.textContent = tips[index];
-        clearInterval(window.tipInterval); // Clear any existing interval
-        window.tipInterval = setInterval(() => {
-            index = (index + 1) % tips.length;
-            tipDisplay.textContent = tips[index];
-        }, 5000);
-    }, error => {
-        console.error('Error fetching tips:', error);
-        tipDisplay.textContent = 'Error loading tips.';
-    });
-}
-
-// Load tips on page load
-displayTips();
+        "Tip: Sip some cash into an SIP each month
