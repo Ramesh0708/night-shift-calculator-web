@@ -24,8 +24,8 @@
             <label class="switch">
                 <input type="checkbox" id="themeToggle">
                 <span class="slider">
-                    <span class="sun">☀️</span>
-                    <span class="moon">🌙</span>
+                    <span class="moon">☀️</span>
+                    <span class="sun">🌙</span>
                 </span>
             </label>
         </div>
@@ -45,11 +45,55 @@
                         </div>
                         <button type="submit" class="btn btn-primary w-100 calc-btn">Calculate</button>
                     </form>
-                    <div id="result" class="mt-3 text-center">
+                    <div id="result" class="mt-3 text-center" style="display: none;">
                         <h3 class="result-text">Allowance: ₹ <span id="allowanceAmount" class="slot">0.00</span></h3>
                         <button id="shareResult" class="btn btn-secondary mt-2" style="display: none;">Share Your Earnings</button>
                         <p id="message" style="display: none; font-size: 16px;"></p>
                         <p id="investTip" style="display: none; font-size: 14px; font-style: italic;"></p>
                     </div>
                 </div>
-            </
+            </div>
+            <div class="col-md-6">
+                <h3 class="mt-3">How It Works</h3>
+                <p>Your night shift allowance is calculated as <strong>(CTC / 240) * 0.25 * Days</strong>. This assumes 240 working days in a year and a 25% allowance rate, common in India. Add your annual CTC and the number of night shift days to see your extra earnings!</p>
+            </div>
+        </div>
+        <div class="ad-container mt-5 text-center">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-9167202181294085"
+                 data-ad-slot="9216307205"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <h3>Share Your Tips</h3>
+                <form id="tipForm" class="mb-3">
+                    <div class="mb-3">
+                        <label for="tipInput" class="form-label">Submit a Night Shift Tip</label>
+                        <textarea class="form-control input-glow" id="tipInput" rows="3" placeholder="E.g., 'Stay hydrated during breaks!'"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 calc-btn">Add Tip</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h3>Community Tips</h3>
+                <div id="tipDisplay" class="card p-3" style="min-height: 100px;">Loading tips...</div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3>Stay Healthy on Night Shifts</h3>
+                <p>Working nights can be tough, but small habits make a big difference. Aim for 7-8 hours of sleep in a dark, quiet room—use blackout curtains if needed. Nap 2-3 hours before your shift to boost energy. Eat light meals like fruits or nuts to avoid sluggishness, and drink water steadily (aim for 2-3 liters per shift). A 20-minute walk during breaks keeps your blood flowing. Protect your mental health too—chat with coworkers or listen to music to stay upbeat. You’ve got this!</p>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <p class="footer-text">Crafted in <span class="year">2025</span> by <span class="name">Ramesh</span> with a cosmic assist from <span class="name">Grok (xAI)</span> | <a href="https://github.com/Ramesh0708/night-shift-calculator-web" target="_blank" class="name">Fork this on GitHub</a></p>
+    </footer>
+</body>
+</html>
