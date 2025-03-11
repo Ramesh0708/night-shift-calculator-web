@@ -1,3 +1,23 @@
+// Firebase Config from Ramesh
+const firebaseConfig = {
+    apiKey: "AIzaSyCBBKMKIJ8V4zriCrfG9ZqvAh9LW_nMCxM",
+    authDomain: "nightshiftcalculator.firebaseapp.com",
+    projectId: "nightshiftcalculator",
+    storageBucket: "nightshiftcalculator.firebasestorage.app",
+    messagingSenderId: "804931239067",
+    appId: "1:804931239067:web:9a81be5764444bf6ec1a3e"
+};
+
+// Initialize Firebase safely
+let db;
+try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+} catch (error) {
+    console.error('Firebase initialization failed:', error);
+}
+
+// Calculator logic
 document.getElementById('calculatorForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -55,5 +75,4 @@ document.getElementById('calculatorForm').addEventListener('submit', function(ev
 
     const tips = [
         "Tip: Invest in a mutual fund for steady growth!",
-        "Tip: Try a fixed deposit for safe returns!",
-        "Tip: Sip some cash into an SIP each month
+        "Tip: Try a fixed deposit for safe
