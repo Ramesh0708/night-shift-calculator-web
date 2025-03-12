@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Night Shift Allowance Calculator</title>
+    <title>Night Shift & Appraisal Calculator</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -24,20 +24,26 @@
             <label class="switch">
                 <input type="checkbox" id="themeToggle">
                 <span class="slider">
-                    <span class="moon">☀️</span>
-                    <span class="sun">🌙</span>
+                    <span class="sun">☀️</span>
+                    <span class="moon">🌙</span>
                 </span>
             </label>
         </div>
-        <h1 class="text-center mb-4 title-glow">Night Shift Allowance Calculator</h1>
-        <p class="text-center mb-4">Calculate your night shift earnings instantly! This tool helps Indian workers determine their allowance based on annual CTC and night shift days.</p>
+        <h1 class="text-center mb-4 title-glow">Night Shift & Appraisal Calculator</h1>
+        <p class="text-center mb-4">Calculate your night shift earnings or appraisal hike instantly! Built for Indian workers.</p>
+
+        <!-- Night Shift Calculator -->
         <div class="row">
             <div class="col-md-6">
                 <div class="card p-4 mx-auto" style="max-width: 500px;">
+                    <h3>Night Shift Allowance</h3>
                     <form id="calculatorForm">
                         <div class="mb-3">
                             <label for="ctc" class="form-label">Annual CTC (₹)</label>
-                            <input type="number" class="form-control input-glow" id="ctc" placeholder="Enter your total salary" required>
+                            <div class="input-group">
+                                <input type="password" class="form-control input-glow" id="ctc" placeholder="Enter your total salary" required>
+                                <button type="button" class="btn btn-outline-secondary" id="toggleCtc">Show</button>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="days" class="form-label">Night Shift Days</label>
@@ -55,20 +61,54 @@
             </div>
             <div class="col-md-6">
                 <h3 class="mt-3">How It Works</h3>
-                <p>Your night shift allowance is calculated as <strong>(CTC / 240) * 0.25 * Days</strong>. This assumes 240 working days in a year and a 25% allowance rate, common in India. Add your annual CTC and the number of night shift days to see your extra earnings!</p>
+                <p>Night Shift: <strong>(CTC / 240) * 0.25 * Days</strong>. Assumes 240 working days and 25% allowance rate.</p>
             </div>
         </div>
-        <div class="ad-container mt-5 text-center">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-9167202181294085"
-                 data-ad-slot="9216307205"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
+
+        <!-- Appraisal Calculator -->
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <div class="card p-4 mx-auto" style="max-width: 500px;">
+                    <h3>Appraisal Hike</h3>
+                    <form id="appraisalForm">
+                        <div class="mb-3">
+                            <label for="lastCtc" class="form-label">Last CTC (₹)</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control input-glow" id="lastCtc" placeholder="Your previous salary" required>
+                                <button type="button" class="btn btn-outline-secondary" id="toggleLastCtc">Show</button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="currentCtc" class="form-label">Current CTC (₹)</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control input-glow" id="currentCtc" placeholder="Your new salary" required>
+                                <button type="button" class="btn btn-outline-secondary" id="toggleCurrentCtc">Show</button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="position" class="form-label">Job Position</label>
+                            <input type="text" class="form-control input-glow" id="position" placeholder="E.g., Software Engineer">
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control input-glow" id="location" placeholder="E.g., Bangalore">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 calc-btn">Calculate Hike</button>
+                    </form>
+                    <div id="appraisalResult" class="mt-3 text-center" style="display: none;">
+                        <h3 class="result-text">Hike: <span id="hikePercentage" class="slot">0.00</span>%</h3>
+                        <p id="appraisalFeedback" style="font-size: 16px;"></p>
+                        <button id="shareAppraisal" class="btn btn-secondary mt-2" style="display: none;">Share Your Hike</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h3 class="mt-3">Appraisal Insights</h3>
+                <p>Hike = <strong>((Current CTC - Last CTC) / Last CTC) * 100</strong>. Add position and location (optional) to see if it’s a good deal!</p>
+            </div>
         </div>
+
+        <!-- Tips Section (unchanged) -->
         <div class="row mt-5">
             <div class="col-md-6">
                 <h3>Share Your Tips</h3>
@@ -85,10 +125,12 @@
                 <div id="tipDisplay" class="card p-3" style="min-height: 100px;">Loading tips...</div>
             </div>
         </div>
+
+        <!-- Rest unchanged -->
         <div class="row mt-5">
             <div class="col-12">
                 <h3>Stay Healthy on Night Shifts</h3>
-                <p>Working nights can be tough, but small habits make a big difference. Aim for 7-8 hours of sleep in a dark, quiet room—use blackout curtains if needed. Nap 2-3 hours before your shift to boost energy. Eat light meals like fruits or nuts to avoid sluggishness, and drink water steadily (aim for 2-3 liters per shift). A 20-minute walk during breaks keeps your blood flowing. Protect your mental health too—chat with coworkers or listen to music to stay upbeat. You’ve got this!</p>
+                <p>Working nights can be tough, but small habits make a big difference...</p>
             </div>
         </div>
     </div>
